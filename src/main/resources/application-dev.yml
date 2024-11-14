@@ -1,0 +1,5 @@
+#dev로 접속 시 dev에 설정된 값은 appilcation.yml과 동일한 값에 덮어써즤고 나머지 설정을 appilcation.yml의 설정을 가지고옴
+server:
+  port: 8081
+  servlet:
+    context-path: /dev #tomcat 내 프로파일를 dev로 작성하면 해당 파일 실행(개발,운영 분리 가능)

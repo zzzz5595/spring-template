@@ -1,0 +1,91 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  # todo 개발 데이터베이스 연결
+  datasource:
+    url: jdbc:h2:mem:test
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create #appilcation 실행 시 모든 테이블 drop 후 재생성
+    show-sql: true #콘솔창에 sql 출력
+    properties:
+      hibernate:
+        format_sql: true #sql 정렬 출력
+        default_batch_fetch_size: 500 # 1:N 컬렉션 조회 시 성능 최적화
+    open-in-view: false # 영속성 컨테스트의 생존 범위를 트랜잭션 범위로 한정
+
+  servlet:
+    multipart:
+      max-file-size: 10MB #파일 업로드 요청 시 하나의 파일 크기를 10MB로 제한
+      max-request-size: 100MB #파일 업로드 요청 시 모든 파일 크기합을 100MB로 제한
+
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connectTimeout: 5000 #5초 동안 외부 API 서버에 연결되지 않으면 타임아웃(실패)
+            readTimeout: 5000 #연결이 성공한 이후 서버가 응답을 줄 때까지 5초를 기다린 후 응답이 없으면 요청이 실패하고 예외가 발생
+
+logging:
+  level:
+    org.hibernate.type: trace; #sql 조건(?)에 바인딩되는 값 및 조회 결과 출력
+    org.hibernate.type.descriptor.sql: trace
+    com.app: debug #todo 패키지 수정
+
+
+kakao:
+  client:
+    id: 8fbba150815fc1d671141795f363410a
+    secret: kGuBVOPHxDwPJpEOJBDo5TtagIjOGLri
+
+token:
+  secret: dGhpcy1pcy1hLXZlcnktbG9uZy1hbmQtc2VjdXJlLXRva2VuLXNlY3JldC1zdHJpbmc= # 임의의 문자열
+  access-token-expiration-time: 900000 # 15분 1000(ms) x 60(s) x 15(m) access-token 만료시간
+  refresh-expiration-hours: 1209600000 # 2주 1000(ms) x 60 (s) x 60(m) x 24(h) x 14(d) refresh-token 만료시간
+
+
+
+
+
+#oracle_mybatis
+#server:
+#  port: 8080 # 서버가 실행될 포트를 8080으로 설정
+#  servlet:
+#    context-path: / # 애플리케이션의 기본 컨텍스트 경로를 루트로 설정
+#
+#spring:
+#  # 오라클 데이터베이스 연결 설정
+#  datasource:
+#    url: jdbc:oracle:thin:@localhost:1521:xe # 오라클 데이터베이스 연결 URL (호스트, 포트 및 서비스 이름/인스턴스 이름에 맞게 수정)
+#    username: your_username # 오라클 데이터베이스 접속 사용자명
+#    password: your_password # 오라클 데이터베이스 접속 비밀번호
+#    driver-class-name: oracle.jdbc.OracleDriver # 오라클 데이터베이스 드라이버 클래스
+#
+#  # MyBatis 관련 설정
+#  mybatis:
+#    configuration:
+#      map-underscore-to-camel-case: true # 데이터베이스의 언더스코어 표기법을 CamelCase로 자동 변환
+#      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 콘솔에 MyBatis SQL 로그 출력 설정
+#    mapper-locations: classpath:mapper/**/*.xml # MyBatis 매퍼 XML 파일의 경로 설정
+#
+#  # 파일 업로드 관련 설정
+#  servlet:
+#    multipart:
+#      max-file-size: 10MB # 업로드할 개별 파일의 최대 크기를 10MB로 제한
+#      max-request-size: 100MB # 하나의 요청에서 업로드 가능한 전체 파일 크기를 100MB로 제한
+#
+## 로깅 설정
+#logging:
+#  level:
+#    root: INFO # 전체 애플리케이션의 기본 로그 수준을 INFO로 설정
+#    org.mybatis: DEBUG # MyBatis 관련 로그를 DEBUG 수준으로 설정 (자세한 SQL 로그 확인)
+#    com.yourpackage.mapper: DEBUG # 사용자가 정의한 MyBatis Mapper 인터페이스의 로그 수준을 DEBUG로 설정
+#    org.hibernate.type: trace # Hibernate에서 SQL 및 바인딩된 파라미터 정보와 데이터 타입 로그를 TRACE 수준으로 출력
